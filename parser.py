@@ -1,3 +1,4 @@
+
 import os
 import argparse
 
@@ -11,13 +12,11 @@ def parse_arguments(is_training: bool = True):
     parser.add_argument("--L", type=int, default=2, help="_")
     parser.add_argument("--groups_num", type=int, default=8, help="_")
     parser.add_argument("--min_images_per_class", type=int, default=10, help="_")
-    
     # Model parameters
-    parser.add_argument("--backbone", type=str, default="ResNet18",
+    parser.add_argument("--backbone", type=str, default="ResNet50",
                         choices=["VGG16", "ResNet18", "ResNet50", "ResNet101", "ResNet152"], help="_")
-    parser.add_argument("--fc_output_dim", type=int, default=512,
+    parser.add_argument("--fc_output_dim", type=int, default=512, #parts to change
                         help="Output dimension of final fully connected layer")
-                        
     # Training parameters
     parser.add_argument("--use_amp16", action="store_true",
                         help="use Automatic Mixed Precision")
@@ -27,8 +26,12 @@ def parse_arguments(is_training: bool = True):
     parser.add_argument("--batch_size", type=int, default=32, help="_")
     parser.add_argument("--epochs_num", type=int, default=50, help="_")
     parser.add_argument("--iterations_per_epoch", type=int, default=10000, help="_")
-    parser.add_argument("--lr", type=float, default=0.00001, help="_")
-    parser.add_argument("--classifiers_lr", type=float, default=0.01, help="_")
+    parser.add_argument("--lr", type=float, default=0.00001, help="_") # 0.01 / 0.001 / 0.0001
+    parser.add_argument("--classifiers_lr", type=float, default=0.001, help="_")
+    parser.add_argument("--wd", type=float, default=0.001, help="_") # 0.01 / 0.001 / 0.0001
+    parser.add_argument("--classifiers_wd", type=float, default=0.001, help="_")
+    parser.add_argument("--lambd", type=float, default=0.001, help="_") # 0.01 / 0.001 / 0.0001
+    parser.add_argument("--classifiers_lambd", type=float, default=0.001, help="_")
     
     # Data augmentation
     parser.add_argument("--brightness", type=float, default=0.8, help="_")
@@ -65,8 +68,6 @@ def parse_arguments(is_training: bool = True):
                         help="path of the folder with train/val/test sets")
     parser.add_argument("--save_dir", type=str, default="default",
                         help="name of directory on which to save the logs, under logs/save_dir")
-    
-    
     
     args = parser.parse_args()
     
